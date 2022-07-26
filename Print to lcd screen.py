@@ -1,4 +1,5 @@
 #Print to lcd screen
+#Now avaiable on github
 
 import os
 import serial
@@ -15,15 +16,6 @@ class LCD:
     self.CmdChr = chr(0xFE) 
     #self.HomeCursor()
     #self.AutoScrollOff()
-    self.LCDs.write(b"Bonjour")
-    
-       
-  def PutData(self,s):
-    self.LCDs.write(s)
-  
-  def GetData(self,s):
-    self.PutData(s)
-    s = b"Hello Ran"
-    return s
+    self.LCDs.write(b"Hello")
 
 LCD()

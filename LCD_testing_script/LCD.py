@@ -18,11 +18,19 @@ class LCD:
     self.ClearScreen()
     self.HomeCursor()
     self.AutoScrollOff()
-    self.LCDs.write("LCD Driver is go")
+    self.LCDs.write(b"LCD Driver is go")
        
   
   def PutData(self,s):
-    self.LCDs.write(s)
+	#iterate through string i.e for x in <string>
+	#Convert unicode into byte:
+	#	Convert unicode into its hex equivelant
+	#	Chop off the final bit of the unicode
+	#	Feed that into the LCD screen
+	
+	
+	  
+    self.LCDs.write(s) #change to write single byte
   
   def GetData(self,s):
     self.PutData(s)
