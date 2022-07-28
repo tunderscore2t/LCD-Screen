@@ -22,15 +22,19 @@ class LCD:
        
   
   def PutData(self,s):
-	#iterate through string i.e for x in <string>
-	#Convert unicode into byte:
-	#	Convert unicode into its hex equivelant
-	#	Chop off the final bit of the unicode
-	#	Feed that into the LCD screen
-	
-	
+	  s_encoded = s.encode() 
+	  self.LCDs.write(s_encoded) #change to write single byte
+	  #	iterate through string i.e for x in <string>
+	  #	Convert unicode into byte:
+	  #	Convert unicode into its hex equivelant
+	  #	Chop off the final bit of the unicode
+	  #	Feed that into the LCD screen
 	  
-    self.LCDs.write(s) #change to write single byte
+	  #V2
+	  #split unicode and send it into a bytearray
+	  #loop adding it to a bytearray
+	  #convert chr [0xFE] -> byte [0xFE]
+	  #write the byte to screen
   
   def GetData(self,s):
     self.PutData(s)
@@ -50,7 +54,8 @@ class LCD:
     self.PutData(self.CmdChr+chr(0x52))
 
   def ClearScreen(self):
-    self.PutData(self.CmdChr+chr(0x58))
+    #self.PutData(self.CmdChr+chr(0x58))
+    self.LCDs.write(b'\xFE\x58') #Do the sae
 
   def SetCursorPos(self,X,Y):
     self.PutData(self.CmdChr+chr(0x47)+chr(X)+chr(Y))
