@@ -5,7 +5,7 @@ import os
 import serial
 
 class LCD:
-	def __init__(self,port = '/dev/ttyACM0'):
+	def __init__(self,port = 'COM3'): # '/dev/ttyACM0' -raspberry pi 'COM3' - windows
 		self.LCDs = serial.Serial(port)
 		self.LCDs.baudrate = 9600
 		self.LCDs.stopbits = serial.STOPBITS_ONE
@@ -15,17 +15,22 @@ class LCD:
 		self.LCDs.timeout  = 1
 		#self.ClearScreen()
 		self.GetData(chr(0xFE) + chr(0x58))
+		#self.GetData("Hello")
 		
 	def PutData(self,s):
-		s_encoded = s.encode()
-		print(len(s_encoded))
-		self.LCDs.write(s_encoded)
+		split_string = list(s)
+		string_length = len(s)
+		array = []
+		for i in range (0, string_length):
+			pointer = ord(split_string[i])
+			array.append(pointer)
+		byte_array = bytearray(array)
+		print(byte_array)
+		self.LCDs.write(byte_array)
+
 	  
 	def GetData(self,s):
-		
 		self.PutData(s)
-		#s = "\xFE\x58"
-		s = "Hello World"
 		return s
 		
 	def ClearScreen(self):
