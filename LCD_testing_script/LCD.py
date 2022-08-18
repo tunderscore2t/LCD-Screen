@@ -22,20 +22,10 @@ class LCD:
        
   
   def PutData(self,s):
-	  s_encoded = s.encode() 
-	  self.LCDs.write(s_encoded) #change to write single byte
-	  #	iterate through string i.e for x in <string>
-	  #	Convert unicode into byte:
-	  #	Convert unicode into its hex equivelant
-	  #	Chop off the final bit of the unicode
-	  #	Feed that into the LCD screen
-	  
-	  #V2
-	  #split unicode and send it into a bytearray
-	  #loop adding it to a bytearray
-	  #convert chr [0xFE] -> byte [0xFE]
-	  #write the byte to screen
-  
+    send = SendData(s)
+    byte_array = send.ConvertData()
+    self.LCDs.write(byte_array)
+    
   def GetData(self,s):
     self.PutData(s)
     s = self.LCDs.readline()
@@ -54,8 +44,7 @@ class LCD:
     self.PutData(self.CmdChr+chr(0x52))
 
   def ClearScreen(self):
-    #self.PutData(self.CmdChr+chr(0x58))
-    self.LCDs.write(b'\xFE\x58') #Do the sae
+    self.LCDs.write(b'\xFE\x58')
 
   def SetCursorPos(self,X,Y):
     self.PutData(self.CmdChr+chr(0x47)+chr(X)+chr(Y))
@@ -127,3 +116,16 @@ class LineController:
       self.LCD.WriteAt(1,self.line,op)
       self.nxtime = time.time() + self.delay
 
+class SendData():
+  def __init__(self, s):
+    self.s = s
+  
+  def ConvertData(self):
+    split_string = list(self.s)
+    string_length = len(self.s)
+    array = []
+    for i in range(0, string_length):
+      pointer = ord(split_string[i])
+      array.append(pointer)
+      byte_array = bytearray(array)
+      return byte_array
